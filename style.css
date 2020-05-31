@@ -12,9 +12,47 @@
     width: 100%;
     background-color: black;
 }
- 
 .fullscreen-bg__video {
     opacity: 0.7;
-    position: absolute;
+    position: fixed;
     height: 106vh;
+}
+.overlay {
+    z-index: 1;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    font-family: "HelveticaNeue","Helvetica Neue",sans-serif;
+}
+.overlay h2 {
+    text-align: center;
+    color: white;
+    font-size: 50px;
+}
+p{
+    z-index: 1;
+    display: block; 
+    font-family: "HelveticaNeue","Helvetica Neue",sans-serif;
+    font-size: 14px;
+    font-weight: 900;
+    line-height: 1.2;
+    color: white;
+    position: fixed;            
+    bottom: 0;
+    text-align: end;
+}
+.data{
+    z-index: 1;
+    display: table-row-group; 
+    font-family: "HelveticaNeue","Helvetica Neue",sans-serif;
+    font-size: 15px;
+    font-weight: 900;
+    line-height: 3.5;
+    color: white;
+    position: fixed;            
+    bottom: 0;
+    text-align: end;
 }
