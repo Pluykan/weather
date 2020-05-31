@@ -9,17 +9,21 @@
         <link rel="stylesheet" href="style.css">
 
         <link rel='stylesheet prefetch' href='https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css'>
-        <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'>
+        
 
     </head>
     <body>
 
         <div class="fullscreen-bg">
             <div class="overlay">
-
+                    <h2 id="city-text">Ваша локация: </h2>
+                    <h2 id="weather-text">Погода: </h2>
+                    
             </div>
-            <video loop="" muted="" autoplay="" class="fullscreen-bg__video">
-                <source src="snow.mp4" type="video/mp4">
+            <p class="data" id="date">Дата:</p>
+            <p id="time">Время: </p>
+            <video loop="" muted="" autoplay="" class="fullscreen-bg__video" id="video">
+                <source  type="video/mp4">
             </video>
         </div>
         
@@ -27,13 +31,32 @@
         <p class="text-center data-item" id="city-text"></p> -->
         
         <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-        <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js'></script>
+        
         <script src='https://code.jquery.com/ui/1.11.4/jquery-ui.js'></script>
         <script>
-            
             function dataHandler(data) {
+                var weather = "";
                 if (data.weather) {
-                    $("#weather-text").html(data.weather[0].description);
+                    if(data.weather[0].main == "Thunderstorm"){
+                        weather = "Гроза";
+                        document.getElementById("video").src = "rain.mp4";
+                    }else if(data.weather[0].main == "Rain"){
+                        weather = "Дождь";
+                        document.getElementById("video").src = "rain.mp4";
+                    }else if(data.weather[0].main == "Drizzle"){
+                        weather = "Изморось";
+                        document.getElementById("video").src = "snow.mp4";
+                    }else if(data.weather[0].main == "Snow"){
+                        weather = "Снег";
+                        document.getElementById("video").src = "snow.mp4";
+                    }else if(data.weather[0].main == "Clear"){
+                        weather = "Чистое небо";
+                        document.getElementById("video").src = "day.mp4";
+                    }else if(data.weather[0].main == "Clouds"){
+                        weather = "Облачно";
+                        document.getElementById("video").src = "day.mp4";
+                    }
+                    $("#weather-text").html('Погода: ' + weather);
                 }
             }
 
@@ -44,7 +67,7 @@
                 
                 var apiURI = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=5b58aee62c41eb64fcab16edce2e5cc1";
                 if (locdata){
-                    $("#city-text").html(locdata.city );
+                    $("#city-text").html('Ваша локация: ' + locdata.city);
                 }
                 return $.ajax({
                     url: apiURI,
@@ -63,7 +86,31 @@
                             });
             }
             var updateInterval = setInterval(getLocation().done(getWeather), 300000);
-
+            
+            function showDateTime() {
+                var now = new Date();
+                date.textContent = `${now.toLocaleDateString("ru-ru", { day: "numeric", month: "long" })} ${now.getFullYear()} года, `
+                    + now.toLocaleDateString("ru-ru", { weekday: "long" });
+                time.textContent = correctTime(now);
+                }
+                showDateTime();
+                setInterval(showDateTime, 1000);
+        
+                let stopwatchId, stopwatch_ms,
+                    timerId, timer_ms;
+                                        
+                // Общая функция корректного отображения времени. 
+                function correctTime(time) {
+                    let h = time.getHours(),
+                        m = time.getMinutes(),
+                        s = time.getSeconds();
+                    return `${(h < 10 ? "0" : "") + h}:${(m < 10 ? "0" : "") + m}:${(s < 10 ? "0" : "") + s}`;
+                } 
+                // В Opera отображение ведущего нуля часов глючит в Intl.
+                function correctTimeIntl(time) {
+                    let format = Intl.DateTimeFormat("ru-ru", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+                    return format.format(time);
+            }  
         </script>
     </body>
 </html>
