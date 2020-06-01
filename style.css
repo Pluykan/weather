@@ -15,7 +15,8 @@
 .fullscreen-bg__video {
     opacity: 0.7;
     position: fixed;
-    height: 106vh;
+    min-height: 100vh;
+    min-width: 100vw;
 }
 .overlay {
     z-index: 1;
