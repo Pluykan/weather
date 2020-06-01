@@ -4,7 +4,6 @@
     padding: 0;
 }
 .fullscreen-bg {
-    size: cover;
     overflow: hidden;
     position: absolute;
     z-index: -100;
